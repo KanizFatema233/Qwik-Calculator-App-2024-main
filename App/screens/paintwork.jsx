@@ -24,15 +24,14 @@ const PaintWork = ({ navigation }) => {
   useEffect(() => {
     if (categoryValue === "Wallpaper") {
       navigation.navigate("Wallpaper");
-    }
-    else if (categoryValue === "PlasterWork") {
+    } else if (categoryValue === "PlasterWork") {
       navigation.navigate("PlasterWork");
     }
   }, [categoryValue]);
 
   // State for the input fields
   const [roomHeight, setRoomHeight] = useState("");
-  const [roomWidth, setRoomWidth] = useState(""); // Added state for roomWidth
+  const [roomWidth, setRoomWidth] = useState("");
   const [noOfDoors, setNoOfDoors] = useState("");
   const [doorWidth, setDoorWidth] = useState("");
   const [doorHeight, setDoorHeight] = useState("");
@@ -48,7 +47,7 @@ const PaintWork = ({ navigation }) => {
 
   const handleReset = () => {
     setRoomHeight("");
-    setRoomWidth(""); // Reset roomWidth state
+    setRoomWidth("");
     setNoOfDoors("");
     setDoorWidth("");
     setDoorHeight("");
@@ -62,9 +61,8 @@ const PaintWork = ({ navigation }) => {
   };
 
   const handleCalculate = () => {
-    // Convert input values to numbers
     const L = parseFloat(roomHeight);
-    const W = parseFloat(roomWidth); // Parse roomWidth as a float
+    const W = parseFloat(roomWidth);
     const H = parseFloat(roomHeight);
     const No_doors = parseInt(noOfDoors);
     const Door_Height = parseFloat(doorHeight);
@@ -76,35 +74,19 @@ const PaintWork = ({ navigation }) => {
     const A_covered = parseFloat(areaPerLiter);
     const P_price = parseFloat(paintPrice);
 
-    // Formulas
-    // 3.1 Room Wall Area Calculation
     const Total_room_wall_area = 2 * (L * H + W * H);
-
-    // 3.2 Total Door Area Calculation
     const Total_door_area = Door_Height * Door_Width * No_doors;
-
-    // 3.3 Total Window Area Calculation
     const Total_window_area = Window_Height * Window_Width * No_windows;
-
-    // 3.4 Total Area to be Painted Calculation
-    const Total_paint_area =
-      Total_room_wall_area - Total_door_area - Total_window_area;
-
-    // 3.5 Volume of Paint Needed Calculation
+    const Total_paint_area = Total_room_wall_area - Total_door_area - Total_window_area;
     const Volume_paint_needed = (Total_paint_area * N_coats) / A_covered;
-
-    // 3.6 Total Cost Calculation
     const Total_cost = Volume_paint_needed * P_price;
 
-    // Prepare result object
     const result = {
-      materials: "Paint",
-      unit: "Litres",
-      quantity: Volume_paint_needed.toFixed(2), // Round to 2 decimal places
-      totalCost: Total_cost.toFixed(2), // Round to 2 decimal places
+      totalPaintArea: Total_paint_area.toFixed(2),
+      volumePaintNeeded: Volume_paint_needed.toFixed(2),
+      totalCost: Total_cost.toFixed(2),
     };
 
-    // Update state with the result
     setResult(result);
   };
 
@@ -290,17 +272,29 @@ const PaintWork = ({ navigation }) => {
           <View style={styles.tableContainer}>
             <Text style={styles.tableTitle}>Calculation Result</Text>
             <View style={styles.table}>
-              <View style={styles.tableRow}>
+              <View style={[styles.tableRow, styles.tableHeader]}>
                 <Text style={styles.tableCell}>Materials</Text>
                 <Text style={styles.tableCell}>Unit</Text>
                 <Text style={styles.tableCell}>Quantity</Text>
-                <Text style={styles.tableCell}>Total Cost</Text>
+              
               </View>
               <View style={styles.tableRow}>
-                <Text style={styles.tableCell}>{result.materials}</Text>
-                <Text style={styles.tableCell}>{result.unit}</Text>
-                <Text style={styles.tableCell}>{result.quantity}</Text>
-                <Text style={styles.tableCell}>${result.totalCost}</Text>
+                <Text style={styles.tableCell}>Total paint area</Text>
+                <Text style={styles.tableCell}>m2</Text>
+                <Text style={styles.tableCell}>{result.totalPaintArea}</Text>
+            
+              </View>
+              <View style={styles.tableRow}>
+                <Text style={styles.tableCell}>Volume of paint needed</Text>
+                <Text style={styles.tableCell}>litre</Text>
+                <Text style={styles.tableCell}>{result.volumePaintNeeded}</Text>
+                
+              </View>
+              <View style={styles.tableRow}>
+                <Text style={styles.tableCell}>Total Cost</Text>
+                <Text style={styles.tableCell}>BDT</Text>
+                
+                <Text style={styles.tableCell}>{result.totalCost}</Text>
               </View>
             </View>
           </View>
@@ -421,7 +415,6 @@ const styles = StyleSheet.create({
     backgroundColor: "#FFF7F0",
     width: "100%",
     height: 55,
-
     shadowColor: "#000",
     shadowOffset: { width: 1.5, height: 1.5 },
     shadowOpacity: 0.8,

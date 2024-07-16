@@ -233,7 +233,7 @@ const HomePage = () => {
               justifyContent: "center",
               backgroundColor: "#fff",
             }}
-            onPress={() => navigation.navigate("Home")}
+            onPress={() => navigation.navigate("ConcreteSlab")}
           >
             <View style={{}}>
               <View style={{ flexDirection: "row", justifyContent: "center" }}>
